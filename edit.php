@@ -10,7 +10,16 @@
   $stmt->execute($data);
 
   $feed = $stmt->fetch(PDO::FETCH_ASSOC);
-  //今データを格納した＄feedを使って、画面に編集データを表示する。
+
+  if (!empty($_POST)) {
+      $update_sql = "UPDATE `feeds` SET `feed` = ?WHERE `feeds`.`id`=?";
+      $data = array($_POST["feed"],$feed_id);
+      $stmt = $dbh->prepare($update_sql);
+      $stmt->execute($data);
+
+      header("Location:timline.php");
+      exit();
+  }
 
 
 
