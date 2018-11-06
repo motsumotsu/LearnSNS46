@@ -17,7 +17,7 @@
       $stmt = $dbh->prepare($update_sql);
       $stmt->execute($data);
 
-      header("Location:timline.php");
+      header("Location: timeline.php");
       exit();
   }
 
