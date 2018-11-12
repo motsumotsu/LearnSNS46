@@ -11,12 +11,15 @@
 
   $feed = $stmt->fetch(PDO::FETCH_ASSOC);
 
+  //更新処理（更新ボタンが押されたときの処理）
   if (!empty($_POST)) {
-      $update_sql = "UPDATE `feeds` SET `feed` = ?WHERE `feeds`.`id`=?";
+      $update_sql = "UPDATE `feeds` SET `feed` = ? WHERE `feeds`.`id`=?";//→変更したつぶやきをDBに上書き保存する
       $data = array($_POST["feed"],$feed_id);
+      //sql文の実行
       $stmt = $dbh->prepare($update_sql);
       $stmt->execute($data);
-
+      
+      //タイムラインへ遷移
       header("Location: timeline.php");
       exit();
   }

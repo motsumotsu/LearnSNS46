@@ -45,6 +45,32 @@
         break;
       }
 
+      //いいね済みかどうかの確認
+      $like_flag_sql = "SELECT * FROM `like` WHERE `user_id`=? AND `feed_id` = ?";
+      $like_flag_data = [$signin_user['id'],$feed['id']];
+      
+      $like_flag_tmt = $dbh->prepare($like_flag_sql);
+      $like_flag_stmt -> execute($like_flag_data);
+
+      $is_liked = $like_flag_stmt->fetch(PDO::FETCH_ASSOC);
+
+      //三項演算子（if文の省略形。代入のみの場合に使える）
+      $feed['is_liked'] = $is_liked ? true:false;
+      //↓下のif文ｇと同じ
+      //if ($is_liked) {$feed['is_liked'] = true;}else{$feed['is_liked'] = false;}
+
+    //$feed連想配列にlike数を格納するキーを用意し、数字を代入する
+    $like_sql = 'SELECT COUNT(*) as `like_count` FROM `likes` WHERE `feed_id` = ?';
+    $like_data = array($feed['id']);
+    $like_stmt = $dbh->prepare($like_sql);
+    $like_stmt -> execute($like_data);
+
+    $like_count_data = $like_stmt->fetch(PDO::FETCH_ASSOC);
+
+    $feed['like_count'] = $like_count_data['like_count'];
+
+    //v($feed,'feed');
+
     $feeds[] = $feed;//[]は、「配列の末尾にデータを追加する」という意味。
     }
     
@@ -86,6 +112,7 @@
         </form>
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
+            <span hidden id="signin_user"><?php echo $signin_user['id']?></span>
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="user_profile_img/<?php echo $signin_user['img_name']; ?>" width="18" class="img-circle"><?php echo $signin_user["name"]; ?> <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="#">マイページ</a></li>
@@ -137,5 +164,6 @@
   <script src="assets/js/jquery-3.1.1.js"></script>
   <script src="assets/js/jquery-migrate-1.4.1.js"></script>
   <script src="assets/js/bootstrap.js"></script>
+  <script src="assets/js/app.js"></script>
 </body>
 </html>
