@@ -46,11 +46,11 @@
       }
 
       //いいね済みかどうかの確認
-      $like_flag_sql = "SELECT * FROM `like` WHERE `user_id`=? AND `feed_id` = ?";
+      $like_flag_sql = "SELECT * FROM `likes` WHERE `user_id`=? AND `feed_id` = ?";
       $like_flag_data = [$signin_user['id'],$feed['id']];
       
-      $like_flag_tmt = $dbh->prepare($like_flag_sql);
-      $like_flag_stmt -> execute($like_flag_data);
+      $like_flag_stmt = $dbh->prepare($like_flag_sql);
+      $like_flag_stmt->execute($like_flag_data);
 
       $is_liked = $like_flag_stmt->fetch(PDO::FETCH_ASSOC);
 

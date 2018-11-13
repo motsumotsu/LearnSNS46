@@ -5,7 +5,18 @@
     $feed_id = $_POST["feed_id"];
     $user_id = $_POST["user_id"];
 
-    $sql = "INSERT INTO `likes` (`user_id`, `feed_id`) VALUES (?, ?);";
+    
+    if(isset($_POST["is_liked"])){
+      //いいねボタンが押されたとき
+      //どの記事を誰がいいねしたか、likeテーブルに保存
+      $sql = "INSERT INTO `likes` (`user_id`, `feed_id`) VALUES (?, ?);";
+    }else{
+      //いいねを取り消すボタンが押されたとき
+      //保存されている、like情報をlikeテーブルから削除
+      $sql = "DELETE FROM `likes` WHERE `user_id`=? AND `feed_id`=?";
+    }
+
+    
 
     $data = [$user_id, $feed_id];
     $stmt = $dbh->prepare($sql);
