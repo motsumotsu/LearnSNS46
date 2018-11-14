@@ -1,6 +1,8 @@
 $(function() {
   //いいね処理
-    $('.js-like').on('click', function() {
+    //$('.js-like').on('click', function() {
+    $(document).on('click', '.js-like', function() {
+
       //user_id,feed_id取得できてるか確認
       //$(this)今のイベントを発動させた部品
       var feed_id = $(this).siblings('.feed-id').text();
@@ -30,7 +32,10 @@ $(function() {
           console.log(data);
           if (data == 'true'){
             like_count++; //like_cout+1と同じ意味
-            like_btn.siblings('.like_count').text(like_count); //いいね！を押したらいいね数の数値が増える
+            like_btn.siblings('.like_count').text(like_count);//いいね！を押したらいいね数の数値が増える
+            like_btn.removeClass('js-like');//ボタンからlikeボタンの目印であるクラスjs-likeを消す
+            like_btn.addClass('js-unlike');//ボタンにいいねを取り消すボタンの目印であるクラスjs-unlike
+            like_btn.children('span').text('いいねを取り消す');//ボタンの表記を変更
           }
         })
         .fail(function(err){
@@ -40,7 +45,8 @@ $(function() {
 
     });
     //いいねを取り消す処理
-    $('.js-unlike').on('click', function() {
+    //$('.js-unlike').on('click', function() {
+      $(document).on('click', '.js-unlike', function() {
       var feed_id = $(this).siblings('.feed-id').text();
       var user_id = $('#signin_user').text();
 
@@ -66,6 +72,10 @@ $(function() {
           if (data == 'true'){
             like_count--; //like_cout-1と同じ意味
             like_btn.siblings('.like_count').text(like_count); //いいねを取り消すボタンを押したらいいね数の数値が減る
+          
+            like_btn.removeClass('js-unlike');
+            like_btn.addClass('js-like');
+            like_btn.children('span').text('いいね!');//ボタンの表記を変更
           }
         })
         .fail(function(err){
