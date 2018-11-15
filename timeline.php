@@ -28,8 +28,18 @@
     //$sql = 'SELECT * FROM `feeds` ORDER BY `created` DESC';//一覧データを取得するSELECT文
     //DESC：大きい数字から並べる
     //ASC:小さい数字から並べる
+    if (isset($_GET['search_word'])){
+      //検索ワードがあるとき↓
+      $sql = 'SELECT `f`.*, `u`.`name`,`u`.`img_name` AS `profile_img` FROM `feeds` AS `f` INNER JOIN `users` AS `u` ON `f`.`user_id`= `u`.`id` WHERE `f`.`feed` LIKE ? ORDER BY `created` DESC';
+      $search_word = "%".$_GET['search_word']."%";
+      $data = [$search_word];
+    }else{
+
+    //検索ワードがないとき↓
     $sql = 'SELECT `f`.*, `u`.`name`,`u`.`img_name` AS `profile_img` FROM `feeds` AS `f` INNER JOIN `users` AS `u` ON `f`.`user_id`= `u`.`id` ORDER BY `created` DESC';
-    $data = array();
+      $data = [];
+    }
+
     $stmt = $dbh->prepare($sql);
     $stmt -> execute($data);
 
